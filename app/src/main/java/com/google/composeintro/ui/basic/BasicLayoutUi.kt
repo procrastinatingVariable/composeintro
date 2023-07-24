@@ -13,6 +13,7 @@ fun BasicLayoutsUI(
     filters: List<Filter>,
     picks: List<Dessert>,
     populars: List<Dessert>,
+    onDessertClick: (Dessert) -> Unit,
 ) {
 
 }
@@ -24,7 +25,8 @@ fun BasicLayoutsUIPreview() {
         BasicLayoutsUI(
             filters = filters,
             picks = desserts.take(5),
-            populars = desserts.takeLast(5)
+            populars = desserts.takeLast(5),
+            onDessertClick = { }
         )
     }
 }

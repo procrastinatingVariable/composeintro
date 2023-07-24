@@ -7,9 +7,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.google.composeintro.model.desserts
 import com.google.composeintro.ui.lazy.LazyListScreen
 import com.google.composeintro.ui.hello.MenuScreen
 import com.google.composeintro.ui.basic.BasicLayoutsScreen
+import com.google.composeintro.ui.basic.details.DetailsScreen
 
 @Composable
 fun Main() {
@@ -26,7 +28,15 @@ fun Main() {
         }
 
         composable("basic") {
-            BasicLayoutsScreen()
+            BasicLayoutsScreen(
+                onDessertClick = { dessert ->
+                    navController.navigate("details")
+                }
+            )
+        }
+
+        composable("details") {
+            DetailsScreen(desserts.first())
         }
 
         composable("lazy") {
