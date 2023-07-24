@@ -3,9 +3,17 @@ package com.google.composeintro.ui.basic
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.ComposeIntroTheme
+import com.google.composeintro.model.Dessert
+import com.google.composeintro.model.Filter
+import com.google.composeintro.model.desserts
+import com.google.composeintro.model.filters
 
 @Composable
-fun BasicLayoutsUI() {
+fun BasicLayoutsUI(
+    filters: List<Filter>,
+    picks: List<Dessert>,
+    populars: List<Dessert>,
+) {
 
 }
 
@@ -13,6 +21,10 @@ fun BasicLayoutsUI() {
 @Composable
 fun BasicLayoutsUIPreview() {
     ComposeIntroTheme {
-        BasicLayoutsUI()
+        BasicLayoutsUI(
+            filters = filters,
+            picks = desserts.take(5),
+            populars = desserts.takeLast(5)
+        )
     }
 }
