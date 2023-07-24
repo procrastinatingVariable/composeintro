@@ -36,7 +36,10 @@ fun Main() {
         }
 
         composable("details") {
-            DetailsScreen(desserts.first())
+            DetailsScreen(
+                desserts.first(),
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
         composable("lazy") {
