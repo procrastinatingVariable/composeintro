@@ -1,11 +1,16 @@
 package com.google.composeintro.model
 
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
+
 data class Dessert(
     val id: Long,
     val imageUrl: String,
     val name: String,
     val tagline: String = "",
 )
+
+val Dessert.description: String
+    get() = LoremIpsum(30).values.joinToString()
 
 val desserts = listOf(
     Dessert(

@@ -38,10 +38,10 @@ import com.google.composeintro.R
 @Composable
 fun UrlImage(
     url: String,
-    placeholder: Painter,
+    placeholder: Painter?,
     contentDescription: String?,
-    contentScale: ContentScale,
     modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit,
 ) {
     if (LocalInspectionMode.current) {
         Box(
