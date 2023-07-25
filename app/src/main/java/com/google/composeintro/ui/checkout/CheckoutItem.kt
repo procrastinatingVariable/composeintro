@@ -97,11 +97,22 @@ private fun Price(
 private fun Quantity(
     modifier: Modifier = Modifier
 ) {
+    val count = remember { mutableStateOf(0) }
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-       //TODO: FILL THIS
+        QuantityLabel()
+
+        Spacer(Modifier.width(12.dp))
+
+        QuantityChangeButton(icon = Icons.Default.Minus, onClick = {
+            count.value--
+        })
+        QuantityText(count.value)
+        QuantityChangeButton(icon = Icons.Default.Add, onClick = {
+            count.value++
+        })
     }
 }
 
