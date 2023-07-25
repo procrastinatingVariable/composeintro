@@ -38,8 +38,8 @@ import com.google.composeintro.R
 @Composable
 fun UrlImage(
     url: String,
-    placeholder: Painter?,
-    contentDescription: String?,
+    placeholder: Painter? = null,
+    contentDescription: String? = null,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit,
 ) {
