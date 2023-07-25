@@ -1,6 +1,5 @@
 package com.google.composeintro.ui.checkout
 
-import android.widget.Space
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,9 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,14 +29,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.composeintro.model.Dessert
+import com.google.composeintro.model.OrderItem
 import com.google.composeintro.model.desserts
+import com.google.composeintro.model.formattedPrice
 import com.google.composeintro.ui.common.Minus
 import com.google.composeintro.ui.common.UrlImage
 
 @Composable
 fun CheckoutItem(
-    dessert: Dessert,
-    modifier: Modifier = Modifier
+    orderItem: OrderItem,
+    onQuantityDecrease: () -> Unit,
+    onQuantityIncrease: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -48,7 +49,7 @@ fun CheckoutItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         UrlImage(
-            dessert.imageUrl,
+            orderItem.dessert.imageUrl,
             modifier = Modifier
                 .clip(CircleShape)
                 .size(64.dp)
@@ -57,16 +58,20 @@ fun CheckoutItem(
         Spacer(Modifier.width(8.dp))
 
         Column {
-            Texts(dessert)
+            Texts(orderItem.dessert)
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Price(dessert.price)
+                Price(orderItem.dessert.formattedPrice)
 
-                Quantity()
+                Quantity(
+                    orderItem.quantity,
+                    onQuantityDecrease = onQuantityDecrease,
+                    onQuantityIncrease = onQuantityIncrease,
+                )
             }
         }
     }
@@ -92,41 +97,40 @@ private fun Price(
     )
 }
 
-//IMPLEMENT THIS FUNCTION 👇👇👇👇👇👇👇👇👇
+
 @Composable
 private fun Quantity(
+    quantity: Int,
+    onQuantityIncrease: () -> Unit,
+    onQuantityDecrease: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val count = remember { mutableStateOf(0) }
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         QuantityLabel()
-
-        Spacer(Modifier.width(12.dp))
-
-        QuantityChangeButton(icon = Icons.Default.Minus, onClick = {
-            count.value--
-        })
-        QuantityText(count.value)
-        QuantityChangeButton(icon = Icons.Default.Add, onClick = {
-            count.value++
-        })
+        Spacer(Modifier.width(4.dp))
+        QuantityChangeButton(icon = Icons.Default.Minus, onClick = { onQuantityDecrease() })
+        QuantityText(quantity, modifier = Modifier.padding(horizontal = 4.dp))
+        QuantityChangeButton(icon = Icons.Default.Add, onClick = { onQuantityIncrease() })
     }
 }
 
-//USE THIS 👇👇👇👇👇👇👇👇👇👇
+
 @Composable
-private fun QuantityText(count: Int) {
+private fun QuantityText(
+    count: Int,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = count.toString(),
         style = MaterialTheme.typography.labelLarge,
-        modifier = Modifier.padding(horizontal = 8.dp)
+        modifier = modifier.padding(horizontal = 8.dp)
     )
 }
 
-//USE THIS 👇👇👇👇👇👇👇👇👇👇
+
 @Composable
 private fun QuantityLabel() {
     Text(
@@ -135,7 +139,7 @@ private fun QuantityLabel() {
     )
 }
 
-//USE THIS 👇👇👇👇👇👇👇👇👇👇
+
 @Composable
 private fun QuantityChangeButton(
     icon: ImageVector,
@@ -158,5 +162,9 @@ private fun QuantityChangeButton(
 @Preview
 @Composable
 fun CheckoutItemPreview() {
-    CheckoutItem(dessert = desserts.first())
+    CheckoutItem(
+        orderItem = OrderItem(desserts.first(), 2),
+        onQuantityDecrease = {},
+        onQuantityIncrease = {},
+    )
 }
