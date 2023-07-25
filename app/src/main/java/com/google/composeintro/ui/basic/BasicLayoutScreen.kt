@@ -9,7 +9,7 @@ import com.google.composeintro.model.desserts
 fun BasicLayoutsScreen(onDessertClick: (Dessert) -> Unit) {
     BasicLayoutsUI(
         filters = filters,
-        picks = desserts.take(5),
+        picks = desserts,
         populars = desserts.takeLast(5),
         onDessertClick = onDessertClick,
     )

@@ -8,8 +8,10 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,14 +20,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
@@ -45,6 +54,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.compose.ComposeIntroTheme
@@ -244,15 +254,21 @@ private fun Picks(
     onDessertClick: (Dessert) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val state = rememberScrollState()
-    Row(
+    LazyRow(
         modifier = modifier
-            .fillMaxWidth()
-            .horizontalScroll(state)
-            .padding(24.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(24.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        picks.forEach { dessert ->
+
+        itemsIndexed(picks) { index, dessert ->
+            if (index != 0) {
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .height(120.dp)
+                )
+            }
             PickDessertItem(
                 dessert,
                 modifier = Modifier.clickable {
@@ -261,6 +277,21 @@ private fun Picks(
             )
         }
     }
+}
+
+//USE THIS AS A DIVIDER BETWEEN CARDS 👇👇👇👇👇👇👇👇👇
+@Composable
+private fun HorizontalDivider(
+    modifier: Modifier = Modifier,
+    thickness: Dp = DividerDefaults.Thickness,
+    color: Color = DividerDefaults.color,
+) {
+    Box(
+        modifier
+            .width(thickness)
+            .defaultMinSize(minHeight = 68.dp)
+            .background(color = color)
+    )
 }
 
 @Composable
@@ -384,7 +415,7 @@ fun BasicLayoutsUIPreview() {
     ComposeIntroTheme {
         BasicLayoutsUI(
             filters = filters,
-            picks = desserts.take(5),
+            picks = desserts,
             populars = desserts.takeLast(5),
             onDessertClick = { }
         )
