@@ -1,16 +1,27 @@
 package com.google.composeintro.model
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+
 data class OrderItem(
     val dessert: Dessert,
-    val quantity: Int,
-)
-
-fun OrderItem.incrementOrder(): OrderItem {
-    return copy(quantity = quantity + 1)
+    var quantityState: MutableState<Int> = mutableStateOf(0),
+) {
+    constructor(
+        dessert: Dessert,
+        initialQuantity: Int
+    ) : this(
+        dessert,
+        mutableStateOf(initialQuantity)
+    )
 }
 
-fun OrderItem.decrementOrder(): OrderItem {
-    return copy(quantity = quantity - 1)
+fun OrderItem.incrementOrder() {
+    quantityState.value++
+}
+
+fun OrderItem.decrementOrder() {
+    quantityState.value--
 }
 
 val order = desserts.take(3).map {
