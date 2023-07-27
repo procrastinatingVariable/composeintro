@@ -6,11 +6,13 @@ import com.google.composeintro.model.filters
 import com.google.composeintro.model.desserts
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    onDessertClick: (Dessert) -> Unit,
+) {
     HomeUi(
         filters = filters,
         picks = desserts.take(5),
         populars = desserts.takeLast(5),
-        onDessertClick = { },
+        onDessertClick = onDessertClick,
     )
 }

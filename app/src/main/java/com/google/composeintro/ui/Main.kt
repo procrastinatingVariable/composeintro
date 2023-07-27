@@ -72,6 +72,9 @@ fun Main() {
                 // in order to construct the navigation route with arguments
 
                 HomeScreen(
+                    onDessertClick = { dessert ->
+                        navController.navigate("details/${dessert.id}")
+                    }
                 )
             }
 
@@ -88,8 +91,28 @@ fun Main() {
             }
 
             //✏️✏️✏️TODO Add details screen destination
-            //✏️✏️✏️TODO Read id from arguments and call DetailsScreen(id)
-
+            composable(
+                route = "details/{id}",
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.LongType
+                    }
+                )
+            ) { backstackEntry ->
+                val args = backstackEntry.arguments
+                // args can be null so we use the safe call operator
+                // this means that if args is null, id will be null as well
+                val id = args?.getLong("id")
+                // we throw an exception if someone navigated here with a null id as we don't know
+                // what to display on the screen
+                if (id == null) {
+                    throw IllegalArgumentException("ID cannot be null")
+                }
+                DetailsScreen(
+                    id = id,
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
         }
 
         BottomNavigationBar(
