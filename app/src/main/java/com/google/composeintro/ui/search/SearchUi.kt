@@ -39,6 +39,8 @@ import com.google.composeintro.ui.home.PickDessertItem
 fun SearchUi(desserts: List<Dessert>) {
     //✏️✏️✏️ TODO add state for search query
     //✏️✏️✏️ TODO add state fo search result (show all desserts initially)
+    val searchQuery = remember { mutableStateOf("") }
+    val searchResult = remember { mutableStateOf(desserts) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,7 +54,11 @@ fun SearchUi(desserts: List<Dessert>) {
                 .padding(horizontal = 8.dp)
         ) {
             //✏️✏️✏️ TODO add OutlinedTextField for the search input
-            //✏️✏️✏️ TODO(EXTRA): add CheckBox that enabled case sensitivity
+            OutlinedTextField(
+                value = searchQuery.value,
+                onValueChange = { newValue -> searchQuery.value = newValue },
+                modifier = Modifier.weight(1f)
+            )
 
             //✏️✏️✏️ TODO to the filtering when the icon is clicked
             Icon(
@@ -60,6 +66,11 @@ fun SearchUi(desserts: List<Dessert>) {
                 contentDescription = "search button",
                 modifier = Modifier
                     .size(48.dp)
+                    .clickable {
+                        searchResult.value = desserts.filter { dessert ->
+                            dessert.name.contains(searchQuery.value)
+                        }
+                    }
             )
         }
 
@@ -73,6 +84,9 @@ fun SearchUi(desserts: List<Dessert>) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             //✏️✏️✏️ TODO show result of the query
+            items(searchResult.value) { dessert ->
+                PickDessertItem(dessert)
+            }
         }
     }
 }
