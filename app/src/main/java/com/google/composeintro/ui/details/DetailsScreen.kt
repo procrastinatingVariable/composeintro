@@ -1,4 +1,4 @@
-package com.google.composeintro.ui.basic.details
+package com.google.composeintro.ui.details
 
 import androidx.compose.runtime.Composable
 import com.google.composeintro.model.Dessert
