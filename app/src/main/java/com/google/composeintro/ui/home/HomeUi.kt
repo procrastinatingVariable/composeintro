@@ -165,7 +165,7 @@ private fun Picks(
 }
 
 @Composable
-private fun PickDessertItem(
+fun PickDessertItem(
     dessert: Dessert,
     modifier: Modifier = Modifier
 ) {
