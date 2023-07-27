@@ -23,6 +23,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,14 +46,54 @@ import com.google.composeintro.ui.search.SearchScreen
 
 private val BottomBarHeight = 42.dp
 
+private enum class BottomBarItem {
+    HOME,
+    SEARCH,
+    CHECKOUT,
+    PROFILE
+}
+
 @Composable
 fun Main() {
     //✏️✏️✏️TODO add some state to track the currently selected bottom bar item
-    Box(modifier = Modifier.fillMaxSize()) {
-        //✏️✏️✏️TODO add a navigation graph here for HomeScreen, SearchScreen, CheckoutScreen and ProfileScreen
+    val selectedBottomBarItem = remember { mutableStateOf(BottomBarItem.HOME) }
 
-        //✏️✏️✏️TODO update this to handle bar item selection and state change
+    Box(modifier = Modifier.fillMaxSize()) {
+        //✏️✏️✏️TODO add a navigation graph here for Home, Search, Cart and Profile
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = "home",
+            modifier = Modifier.padding(bottom = BottomBarHeight)
+        ) {
+            composable("home") {
+                HomeScreen()
+            }
+
+            composable("search") {
+                SearchScreen()
+            }
+
+            composable("checkout") {
+                CheckoutScreen()
+            }
+
+            composable("profile") {
+                ProfileScreen()
+            }
+        }
+
         BottomNavigationBar(
+            selectedItem = selectedBottomBarItem.value,
+            onItemSelected = { item ->
+                selectedBottomBarItem.value = item
+                when (item) {
+                    BottomBarItem.HOME -> navController.navigate("home")
+                    BottomBarItem.SEARCH -> navController.navigate("search")
+                    BottomBarItem.CHECKOUT -> navController.navigate("checkout")
+                    BottomBarItem.PROFILE -> navController.navigate("profile")
+                }
+            },
             modifier = Modifier.align(Alignment.BottomCenter)
         )
     }
@@ -59,7 +101,9 @@ fun Main() {
 
 @Composable
 private fun BottomNavigationBar(
-    modifier: Modifier = Modifier
+    selectedItem: BottomBarItem,
+    onItemSelected: (BottomBarItem) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
@@ -71,37 +115,41 @@ private fun BottomNavigationBar(
     ) {
         BottomBarItem(
             //✏️✏️✏️ TODO update this to reflect current selection
-            isSelected = false,
+            isSelected = selectedItem == BottomBarItem.HOME,
             Icons.Outlined.Home,
             onClick = {
                 //✏️✏️✏️TODO navigate and update selection
+                onItemSelected(BottomBarItem.HOME)
             }
         )
 
         BottomBarItem(
             //✏️✏️✏️ TODO update this to reflect current selection
-            isSelected = false,
+            isSelected = selectedItem == BottomBarItem.SEARCH,
             Icons.Outlined.Search,
             onClick = {
                 //✏️✏️✏️TODO navigate and update selection
+                onItemSelected(BottomBarItem.SEARCH)
             }
         )
 
         BottomBarItem(
             //✏️✏️✏️ TODO update this to reflect current selection
-            isSelected = false,
+            isSelected = selectedItem == BottomBarItem.CHECKOUT,
             Icons.Outlined.ShoppingCart,
             onClick = {
                 //✏️✏️✏️TODO navigate and update selection
+                onItemSelected(BottomBarItem.CHECKOUT)
             }
         )
 
         BottomBarItem(
             //✏️✏️✏️ TODO update this to reflect current selection
-            isSelected = false,
+            isSelected = selectedItem == BottomBarItem.PROFILE,
             Icons.Outlined.Person,
             onClick = {
                 //✏️✏️✏️TODO navigate and update selection
+                onItemSelected(BottomBarItem.PROFILE)
             }
         )
     }
@@ -126,7 +174,10 @@ private fun BottomBarItem(
 @Preview
 @Composable
 private fun BottomNavigationBarPreview() {
-    BottomNavigationBar()
+    BottomNavigationBar(
+        selectedItem = BottomBarItem.HOME,
+        onItemSelected =  {}
+    )
 }
 
 @Preview
