@@ -2,11 +2,12 @@ package com.google.composeintro.ui.details
 
 import androidx.compose.runtime.Composable
 import com.google.composeintro.model.Dessert
+import com.google.composeintro.model.desserts
 
 @Composable
-fun DetailsScreen(dessert: Dessert, onBackClick: () -> Unit) {
+fun DetailsScreen(id: Long, onBackClick: () -> Unit) {
     DetailsUi(
-        dessert,
+        desserts.first { dessert -> dessert.id == id },
         1,
         onIncrementQuantity = {},
         onDecrementQuantity = {},

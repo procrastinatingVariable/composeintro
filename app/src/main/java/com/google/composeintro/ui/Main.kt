@@ -31,9 +31,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.composeintro.MainActivity
 import com.google.composeintro.model.desserts
 import com.google.composeintro.ui.checkout.CheckoutScreen
@@ -55,11 +57,9 @@ private enum class BottomBarItem {
 
 @Composable
 fun Main() {
-    //✏️✏️✏️TODO add some state to track the currently selected bottom bar item
     val selectedBottomBarItem = remember { mutableStateOf(BottomBarItem.HOME) }
 
     Box(modifier = Modifier.fillMaxSize()) {
-        //✏️✏️✏️TODO add a navigation graph here for Home, Search, Cart and Profile
         val navController = rememberNavController()
         NavHost(
             navController = navController,
@@ -67,7 +67,12 @@ fun Main() {
             modifier = Modifier.padding(bottom = BottomBarHeight)
         ) {
             composable("home") {
-                HomeScreen()
+                //✏️✏️✏️TODO update home screen to handle item clicks and navigate to a dessert page
+                //❗️❗️HINT: use string interpolation "details/${...}" or "details/" + id
+                // in order to construct the navigation route with arguments
+
+                HomeScreen(
+                )
             }
 
             composable("search") {
@@ -81,6 +86,10 @@ fun Main() {
             composable("profile") {
                 ProfileScreen()
             }
+
+            //✏️✏️✏️TODO Add details screen destination
+            //✏️✏️✏️TODO Read id from arguments and call DetailsScreen(id)
+
         }
 
         BottomNavigationBar(
@@ -114,41 +123,33 @@ private fun BottomNavigationBar(
         horizontalArrangement = Arrangement.SpaceAround
     ) {
         BottomBarItem(
-            //✏️✏️✏️ TODO update this to reflect current selection
             isSelected = selectedItem == BottomBarItem.HOME,
             Icons.Outlined.Home,
             onClick = {
-                //✏️✏️✏️TODO navigate and update selection
                 onItemSelected(BottomBarItem.HOME)
             }
         )
 
         BottomBarItem(
-            //✏️✏️✏️ TODO update this to reflect current selection
             isSelected = selectedItem == BottomBarItem.SEARCH,
             Icons.Outlined.Search,
             onClick = {
-                //✏️✏️✏️TODO navigate and update selection
                 onItemSelected(BottomBarItem.SEARCH)
             }
         )
 
         BottomBarItem(
-            //✏️✏️✏️ TODO update this to reflect current selection
             isSelected = selectedItem == BottomBarItem.CHECKOUT,
             Icons.Outlined.ShoppingCart,
             onClick = {
-                //✏️✏️✏️TODO navigate and update selection
                 onItemSelected(BottomBarItem.CHECKOUT)
             }
         )
 
         BottomBarItem(
-            //✏️✏️✏️ TODO update this to reflect current selection
             isSelected = selectedItem == BottomBarItem.PROFILE,
             Icons.Outlined.Person,
             onClick = {
-                //✏️✏️✏️TODO navigate and update selection
                 onItemSelected(BottomBarItem.PROFILE)
             }
         )
@@ -176,7 +177,7 @@ private fun BottomBarItem(
 private fun BottomNavigationBarPreview() {
     BottomNavigationBar(
         selectedItem = BottomBarItem.HOME,
-        onItemSelected =  {}
+        onItemSelected = {}
     )
 }
 
